@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 
@@ -29,7 +30,8 @@ def run_cli():
 
     state = "main_menu"
     while state != "quit":
-        sys.stdout.write("\0337")  # Строчка нужна чтобы сохранить позицию курсора
+        if os.name != "nt":
+            sys.stdout.write("\0337")  # Строчка нужна чтобы сохранить позицию курсора
         time.sleep(0.1)
         if state == "main_menu":
             choice = STATE_FUNCTIONS[state]()  # Вызов нужной менюшки
@@ -49,8 +51,9 @@ def run_cli():
         else:
             state = STATE_FUNCTIONS[state]()
 
-        sys.stdout.write("\0338\033[J")  # Востанавливает позицию курсора
-        sys.stdout.flush()  # Очищает экран. Все это делается для динамичной картинки в терминале
+        if os.name != "nt":
+            sys.stdout.write("\0338\033[J")  # Востанавливает позицию курсора
+            sys.stdout.flush()  # Очищает экран. Все это делается для динамичной картинки в терминале
 
 
 if __name__ == "__main__":
